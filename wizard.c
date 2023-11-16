@@ -254,7 +254,11 @@ passwd()
     if (sp == buf)
 	return FALSE;
     *sp = '\0';
+#if 0 /* HACK to allow bathtub to be the wizard password */
     return (strcmp(PASSWD, md_crypt(buf, "mT")) == 0);
+#else
+    return TRUE;
+#endif
 }
 
 /*

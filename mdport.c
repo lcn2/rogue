@@ -526,7 +526,7 @@ md_getshell()
 #elif defined(__DJGPP__)
     char *def = "C:\\COMMAND.COM";
 #else
-    char *def = "/bin/sh";
+    char *def = "/bin/zsh";
     struct passwd *pw;
     pw = getpwuid(getuid());
     s = pw->pw_shell;
@@ -564,7 +564,7 @@ md_shellescape()
          * Set back to original user, just in case
          */
         md_normaluser();
-        execl(sh == NULL ? "/bin/sh" : sh, "shell", "-i", NULL);
+        execl(sh == NULL ? "/bin/zsh" : sh, "shell", "-i", NULL);
         perror("No shelly");
         _exit(-1);
     }

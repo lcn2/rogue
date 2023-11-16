@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env zsh
 # install - install a program, script, or datafile
 
 scriptversion=2005-05-14.22
@@ -58,7 +58,8 @@ stripprog="${STRIPPROG-strip}"
 rmprog="${RMPROG-rm}"
 mkdirprog="${MKDIRPROG-mkdir}"
 
-chmodcmd="$chmodprog 0755"
+chmodcmd="$chmodprog"
+mode="0755"
 chowncmd=
 chgrpcmd=
 stripcmd=
@@ -69,6 +70,8 @@ dst=
 dir_arg=
 dstarg=
 no_target_directory=
+owner=root
+group=games
 
 usage="Usage: $0 [OPTION]... [-T] SRCFILE DSTFILE
    or: $0 [OPTION]... SRCFILES... DIRECTORY
@@ -89,6 +92,7 @@ Options:
 -t DIRECTORY  install into DIRECTORY.
 -T         report an error if DSTFILE is a directory.
 --help     display this help and exit.
+-h	   alias for --help.
 --version  display version info and exit.
 
 Environment variables override the default commands:
@@ -104,19 +108,24 @@ while test -n "$1"; do
         shift
         continue;;
 
-    -g) chgrpcmd="$chgrpprog $2"
+    -g) chgrpcmd="$chgrpprog"
+	group="$2"
         shift
         shift
         continue;;
 
     --help) echo "$usage"; exit $?;;
 
-    -m) chmodcmd="$chmodprog $2"
+    -h) echo "$usage"; exit $?;;
+
+    -m) chmodcmd="$chmodprog"
+        mode="$2"
         shift
         shift
         continue;;
 
-    -o) chowncmd="$chownprog $2"
+    -o) chowncmd="$chownprog"
+	owner="$2"
         shift
         shift
         continue;;
@@ -248,10 +257,10 @@ do
 
   if test -n "$dir_arg"; then
     $doit $mkdircmd "$dst" \
-      && { test -z "$chowncmd" || $doit $chowncmd "$dst"; } \
-      && { test -z "$chgrpcmd" || $doit $chgrpcmd "$dst"; } \
+      && { test -z "$chowncmd" || $doit $chowncmd "$owner" "$dst"; } \
+      && { test -z "$chgrpcmd" || $doit $chgrpcmd "$group" "$dst"; } \
       && { test -z "$stripcmd" || $doit $stripcmd "$dst"; } \
-      && { test -z "$chmodcmd" || $doit $chmodcmd "$dst"; }
+      && { test -z "$chmodcmd" || $doit $chmodcmd "$mode" "$dst"; }
 
   else
     dstfile=`basename "$dst"`
@@ -273,10 +282,10 @@ do
     # ignore errors from any of these, just make sure not to ignore
     # errors from the above "$doit $cpprog $src $dsttmp" command.
     #
-    { test -z "$chowncmd" || $doit $chowncmd "$dsttmp"; } \
-      && { test -z "$chgrpcmd" || $doit $chgrpcmd "$dsttmp"; } \
+    { test -z "$chowncmd" || $doit $chowncmd "$owner" "$dsttmp"; } \
+      && { test -z "$chgrpcmd" || $doit $chgrpcmd "$group" "$dsttmp"; } \
       && { test -z "$stripcmd" || $doit $stripcmd "$dsttmp"; } \
-      && { test -z "$chmodcmd" || $doit $chmodcmd "$dsttmp"; } &&
+      && { test -z "$chmodcmd" || $doit $chmodcmd "$mode" "$dsttmp"; } &&
 
     # Now rename the file to the real destination.
     { $doit $mvcmd -f "$dsttmp" "$dstdir/$dstfile" 2>/dev/null \

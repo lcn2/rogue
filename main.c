@@ -49,7 +49,7 @@ main(int argc, char **argv, char **envp)
     strncpy(home, md_gethomedir(), MAXSTR);
 
     strcpy(file_name, home);
-    strcat(file_name, "rogue.save");
+    strcat(file_name, ".rogue.save");
 
     if ((env = getenv("ROGUEOPTS")) != NULL)
 	parse_opts(env);
@@ -238,8 +238,10 @@ tstp(int ignored)
     getyx(curscr, y, x);
     mvcur(y, x, oy, ox);
     fflush(stdout);
+#if 0
     curscr->_cury = oy;
     curscr->_curx = ox;
+#endif
 }
 
 /*

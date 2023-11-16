@@ -70,16 +70,28 @@ option will kill you and try to add you to the score file.
 .PP
 For more detailed directions, read the document
 .I "A Guide to the Dungeons of Doom."
+.PP
+To cheat and enter wizard mode, press the \+ key and enter \fBbathtub\fR as the Wizard's password.
 .SH AUTHORS
 Michael C. Toy,
 Kenneth C. R. C. Arnold,
 Glenn Wichman
+.PP
+Version v5.4.4 of rogue was obtained from Davidslv's rogue v5.4.4 GitHub repo:
+.PP
+.in +0.5i
+https://github.com/Davidslv/rogue
+.in -0.5i
+.PP
+and then was ported to macOS by Landon Curt Noll:
+.PP
+.in +0.5i
+https://github.com/lcn2/rogue
+.in -0.5i
 .SH FILES
-.DT
-.ta \w'@SCOREFILE@\ \ \ 'u
-@SCOREFILE@	Score file
-.br
-\fB~\fP/rogue.save	Default save file
+Score file		@SCOREFILE@
+.sp 1
+Default save file	\fB~\fP/.rogue.save
 .SH SEE ALSO
 Michael C. Toy
 and
